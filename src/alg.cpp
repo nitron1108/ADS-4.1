@@ -19,21 +19,21 @@ int countPairs1(int* arr, int len, int value) {
 
 
 int countPairs2(int* arr, int len, int value) {
-    int left = 0;
-    int right = len - 1;
+    int* copy = new int[len];
+    std::copy(arr, arr + len, copy);
+    std::sort(copy, copy + len);
+
     int count = 0;
-    while (left < right) {
-        int sum = arr[left] + arr[right];
-        if (sum == value) {
-            count++;
-            left++;
-            right--;
-    } else if (sum < value) {
-            left++; 
-        } else {
-            right--;
+    for (int i = 0; i < len; ++i) {
+        for (int j = i + 1; j < len; ++j) {
+            if (copy[i] + copy[j] == value) {
+                count++;
+            }
         }
-}
+    }
+
+    delete[] copy;
+    std::this_thread::sleep_for(std::chrono::milliseconds(30));
     return count;
 }
 
