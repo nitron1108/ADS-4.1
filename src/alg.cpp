@@ -4,7 +4,6 @@
 #include <thread>
 #include <chrono>
 
-// Вариант 1: вложенные циклы
 int countPairs1(int* arr, int len, int value) {
     int count = 0;
     for (int i = 0; i < len; ++i) {
@@ -18,27 +17,27 @@ int countPairs1(int* arr, int len, int value) {
     return count;
 }
 
-// Вариант 2: два указателя, но с учётом всех повторов
+
 int countPairs2(int* arr, int len, int value) {
-    int* copy = new int[len];
-    std::copy(arr, arr + len, copy);
-    std::sort(copy, copy + len);
-
+    int left = 0;
+    int right = len - 1;
     int count = 0;
-    for (int i = 0; i < len; ++i) {
-        for (int j = i + 1; j < len; ++j) {
-            if (copy[i] + copy[j] == value) {
-                count++;
-            }
+    while (left < right) {
+        int sum = arr[left] + arr[right];
+        if (sum == value) {
+            count++;
+            left++;
+            right--;
+    } else if (sum < value) {
+            left++; 
+        } else {
+            right--;
         }
-    }
-
-    delete[] copy;
-    std::this_thread::sleep_for(std::chrono::milliseconds(30));
+}
     return count;
 }
 
-// Вариант 3: хэш-таблица, точный подсчёт всех уникальных пар
+
 int countPairs3(int* arr, int len, int value) {
     std::unordered_map<int, int> freq;
     for (int i = 0; i < len; ++i) {
